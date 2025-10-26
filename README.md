@@ -1,16 +1,45 @@
-# React + Vite
+# Vinobook — демо-магазин книжок
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Цей репозиторій містить демо-версію інтернет-магазину «Vinobook», створену на React + Vite. Усі стилі написані звичайним CSS, а дані беруться з простого масиву у `src/data/books.js`. Макет призначений для швидких показів та подальшого розширення.
 
-Currently, two official plugins are available:
+## Швидкий старт
+1. Встановіть залежності:
+   ```bash
+   npm install
+   ```
+2. Запустіть локальний сервер розробки:
+   ```bash
+   npm run dev
+   ```
+3. Відкрийте [http://localhost:5173](http://localhost:5173) у браузері. Якщо вікно вже було відкрито, оновіть сторінку після перезапуску сервера (`Ctrl/Cmd + R`).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> **Підказка:** якщо ви досі бачите стандартну сторінку Vite, переконайтесь, що ви знаходитеся у кореневій папці проєкту (наприклад, `bookstore/`). Зупиніть попередній процес `npm run dev`, ще раз виконайте команду запуску і перезавантажте вкладку браузера. За потреби очистьте кеш DevTools (`Ctrl + Shift + R`).
 
-## React Compiler
+## Оновлення локального коду
+Щоб отримати останні зміни з репозиторію:
+```bash
+git pull
+npm install
+npm run dev
+```
+Після виконання цих команд Vite автоматично покаже актуальну версію застосунку.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Структура основних файлів
+- `src/App.jsx` — головний макет сторінки з геро-блоком, каталогом та контактами.
+- `src/components/` — незалежні компоненти (хедер, каталог, кошик, модальне вікно тощо).
+- `src/data/books.js` — демо-список видань «Кобзаря».
+- `src/utils/storage.js` — збереження/читання кошика з `localStorage`.
+- `src/assets/logo.svg` — логотип для хедера.
 
-## Expanding the ESLint configuration
+## Команди
+- `npm run dev` — запуск режиму розробки.
+- `npm run build` — продакшн-збірка.
+- `npm run preview` — перегляд зібраної версії локально.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Налаштування
+- **Змінити палітру**: оновіть кольори у CSS-файлах (`src/App.css`, стилі компонентів).
+- **Додати книжку**: додайте новий об’єкт у масив `books` у `src/data/books.js`.
+- **Оновити контакти**: змініть об’єкт `CONTACTS` у `src/App.jsx`.
+
+---
+З питаннями або пропозиціями щодо покращення звертайтесь через блок “Зв’яжіться з нами” на сторінці застосунку.
