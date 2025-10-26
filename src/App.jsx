@@ -7,10 +7,12 @@ import books from './data/books'
 import { loadCart, saveCart } from './utils/storage'
 import './App.css'
 
+const STORE_NAME = "Солов'їна"
+
 const CONTACTS = {
-  email: 'hello@example.com',
-  instagram: '@vinobook_demo',
-  phone: '+1 (555) 123-4567',
+  email: 'hello@solovyina.ca',
+  instagram: '@solovyina_books',
+  phone: '+1 (514) 555-2186',
 }
 
 const formatter = new Intl.NumberFormat('uk-UA', {
@@ -42,6 +44,10 @@ function App() {
       const haystack = `${book.title} ${book.author}`.toLowerCase()
       return haystack.includes(normalized)
     })
+  }, [searchTerm])
+
+  const highlightBook = useMemo(() => {
+    return searchTerm.trim() ? null : books[0]
   }, [searchTerm])
 
   const cartWithDetails = useMemo(
@@ -125,48 +131,41 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app" id="top">
       <Header
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         onCartToggle={() => setIsCartOpen((prev) => !prev)}
         cartCount={cartCount}
+        contactPhone={CONTACTS.phone}
       />
 
       <main>
         <section className="hero">
-          <div className="hero__content">
-            <p className="hero__eyebrow">Бутік української книжки</p>
-            <h1>Vinobook — сучасна класика у винних тонах</h1>
+          <div className="hero__inner">
+            <p className="hero__eyebrow">Українська книгарня в Монреалі</p>
+            <h1>{STORE_NAME} — простір натхнення від «Кобзаря»</h1>
             <p className="hero__text">
-              Курований вибір видань «Кобзаря» для стильних подарунків та власної колекції.
-              Обирай і залишай запит — ми зв’яжемося, щоб завершити замовлення.
+              Обирайте видання, що відгукуються. Ми зв’яжемося після запиту, щоб узгодити деталі.
             </p>
             <div className="hero__badges">
-              <span>Авторський відбір</span>
+              <span>Лише українські видання</span>
               <span>Доставка по Канаді</span>
-              <span>Без передоплати</span>
-            </div>
-          </div>
-          <div className="hero__card">
-            <div className="hero__card-inner">
-              <p>Натхнення дня</p>
-              <h2>«Кобзар»</h2>
-              <p>Тарас Шевченко</p>
-              <span>{formatPrice(40)}</span>
+              <span>Оплата після підтвердження</span>
             </div>
           </div>
         </section>
 
-        <Catalog books={filteredBooks} onAddToCart={handleAddToCart} />
+        <Catalog
+          books={filteredBooks}
+          onAddToCart={handleAddToCart}
+          highlightBook={highlightBook}
+          formatPrice={formatPrice}
+        />
 
         <section className="contact" id="contact">
           <div className="contact__card">
             <h2>Зв’яжіться з нами</h2>
-            <p>
-              Напишіть або зателефонуйте, якщо хочете уточнити наявність, варіанти доставки чи
-              створити персональний набір.
-            </p>
             <ul>
               <li>
                 <span>Email</span>
@@ -174,7 +173,7 @@ function App() {
               </li>
               <li>
                 <span>Instagram</span>
-                <a href="https://instagram.com/vinobook_demo" target="_blank" rel="noreferrer">
+                <a href="https://instagram.com/solovyina_books" target="_blank" rel="noreferrer">
                   {CONTACTS.instagram}
                 </a>
               </li>
@@ -186,15 +185,14 @@ function App() {
           </div>
           <div className="contact__note">
             <p>
-              Після оформлення запиту ми надішлемо готовий текст для листа чи повідомлення.
-              Просто вставте його в улюблений месенджер — і замовлення зрушить з місця.
+              Залиште замовлення — і ми підготуємо персональний підбір та інструкцію для оплати.
             </p>
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        <p>© {new Date().getFullYear()} Vinobook. Усі права захищено.</p>
+        <p>© {new Date().getFullYear()} {STORE_NAME}. Усі права захищено.</p>
       </footer>
 
       <Cart
@@ -214,6 +212,7 @@ function App() {
         onSubmit={handleCheckoutSubmit}
         summary={checkoutSummary}
         formatPrice={formatPrice}
+        contacts={CONTACTS}
       />
     </div>
   )

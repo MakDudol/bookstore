@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './CheckoutModal.css'
 
-function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice }) {
+function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice, contacts }) {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
@@ -97,8 +97,8 @@ function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice }) {
             <p className="checkout__total">Разом: {formatPrice(summary.total)}</p>
             <div className="checkout__contact">
               <p>
-                Скопіюй і надішли цей текст на <strong>hello@example.com</strong> або в Instagram{' '}
-                <strong>@vinobook_demo</strong>:
+                Скопіюй і надішли цей текст на <strong>{contacts.email}</strong> або в Instagram{' '}
+                <strong>{contacts.instagram}</strong>:
               </p>
               <textarea readOnly value={orderText} />
             </div>

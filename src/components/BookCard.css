@@ -1,17 +1,17 @@
 .book-card {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #fff7f2 100%);
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 16px 32px rgba(45, 10, 24, 0.08);
+  box-shadow: 0 18px 34px rgba(60, 14, 26, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   min-height: 100%;
 }
 
 .book-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 24px 40px rgba(45, 10, 24, 0.12);
+  box-shadow: 0 26px 44px rgba(60, 14, 26, 0.12);
 }
 
 .book-card__image {
@@ -30,58 +30,58 @@
 }
 
 .book-card__body {
-  padding: 1.1rem 1.25rem 0.75rem;
+  padding: 1.1rem 1.3rem 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .book-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .book-card__tags span {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.6rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 999px;
-  background: rgba(140, 47, 69, 0.12);
-  color: #5b1a2e;
+  background: rgba(143, 45, 65, 0.14);
+  color: #6a2034;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
 .book-card h3 {
-  font-size: 1.15rem;
-  color: #361420;
+  font-size: 1.16rem;
+  color: #361621;
   margin: 0;
 }
 
 .book-card__author {
   margin: 0;
   font-weight: 600;
-  color: #5b1a2e;
+  color: #6a2034;
 }
 
 .book-card__genre {
   margin: 0;
-  color: rgba(54, 20, 32, 0.7);
+  color: rgba(55, 19, 32, 0.65);
   font-size: 0.85rem;
 }
 
 .book-card__description {
   margin: 0;
-  color: rgba(54, 20, 32, 0.8);
-  font-size: 0.85rem;
-  line-height: 1.4;
+  color: rgba(55, 19, 32, 0.78);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .book-card__footer {
   margin-top: auto;
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 1rem 1.3rem 1.3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -90,15 +90,15 @@
 
 .book-card__price {
   font-weight: 700;
-  color: #5b1a2e;
+  color: #6a2034;
 }
 
 .book-card__footer button {
-  padding: 0.55rem 1.1rem;
+  padding: 0.58rem 1.15rem;
   border-radius: 999px;
   border: none;
-  background: #5b1a2e;
-  color: #f6ede6;
+  background: #651f32;
+  color: #fdf7f2;
   cursor: pointer;
   font-weight: 600;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -106,5 +106,5 @@
 
 .book-card__footer button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(91, 26, 46, 0.2);
+  box-shadow: 0 12px 24px rgba(99, 28, 48, 0.2);
 }

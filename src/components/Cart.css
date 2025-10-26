@@ -8,7 +8,7 @@
 .cart__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(30, 6, 14, 0.35);
+  background: rgba(40, 8, 18, 0.35);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -19,8 +19,8 @@
   right: 0;
   width: min(420px, 100%);
   height: 100%;
-  background: #fdf9f6;
-  box-shadow: -12px 0 32px rgba(45, 10, 24, 0.2);
+  background: linear-gradient(180deg, #fff7f2 0%, #fbeee8 100%);
+  box-shadow: -12px 0 32px rgba(60, 14, 26, 0.22);
   transform: translateX(100%);
   transition: transform 0.3s ease;
   display: flex;
@@ -49,7 +49,7 @@
 
 .cart__header h2 {
   margin: 0;
-  color: #361420;
+  color: #371320;
 }
 
 .cart__header button {
@@ -57,7 +57,7 @@
   background: transparent;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #5b1a2e;
+  color: #6a2034;
 }
 
 .cart__content {
@@ -69,7 +69,7 @@
 .cart__empty {
   margin: 4rem 0;
   text-align: center;
-  color: rgba(54, 20, 32, 0.7);
+  color: rgba(55, 19, 32, 0.7);
 }
 
 .cart__list {
@@ -92,13 +92,13 @@
 .cart__item-title {
   margin: 0;
   font-weight: 600;
-  color: #361420;
+  color: #371320;
 }
 
 .cart__item-author,
 .cart__item-price {
   margin: 0.25rem 0 0;
-  color: rgba(54, 20, 32, 0.7);
+  color: rgba(55, 19, 32, 0.7);
   font-size: 0.9rem;
 }
 
@@ -113,14 +113,14 @@
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  background: rgba(140, 47, 69, 0.1);
+  background: rgba(143, 45, 65, 0.12);
   overflow: hidden;
 }
 
 .cart__quantity button {
   border: none;
   background: transparent;
-  color: #5b1a2e;
+  color: #6a2034;
   width: 32px;
   height: 32px;
   font-size: 1.1rem;
@@ -131,13 +131,13 @@
   min-width: 32px;
   text-align: center;
   font-weight: 600;
-  color: #5b1a2e;
+  color: #6a2034;
 }
 
 .cart__remove {
   border: none;
   background: transparent;
-  color: #8c2f45;
+  color: #8f2d41;
   font-size: 0.85rem;
   cursor: pointer;
   text-decoration: underline;
@@ -156,15 +156,15 @@
   align-items: center;
   justify-content: space-between;
   font-size: 1rem;
-  color: #361420;
+  color: #371320;
 }
 
 .cart__checkout {
   padding: 0.75rem 1rem;
   border: none;
   border-radius: 14px;
-  background: #5b1a2e;
-  color: #f6ede6;
+  background: #651f32;
+  color: #fdf7f2;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

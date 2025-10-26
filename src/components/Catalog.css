@@ -1,5 +1,5 @@
 .catalog {
-  padding: 3rem 1.5rem 4rem;
+  padding: 2rem 1.5rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -14,7 +14,70 @@
   text-align: center;
   padding: 4rem 1rem;
   border-radius: 24px;
-  background: rgba(246, 237, 230, 0.6);
-  color: #5b1a2e;
+  background: rgba(251, 240, 235, 0.8);
+  color: #6a2034;
   font-weight: 600;
+}
+
+.catalog__highlight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: 24px;
+  padding: 1.8rem;
+  background: radial-gradient(circle at top right, rgba(143, 45, 65, 0.18), transparent 60%), #fffaf6;
+  box-shadow: 0 20px 36px rgba(60, 14, 26, 0.1);
+  min-height: 100%;
+}
+
+.catalog__highlight-label {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  color: rgba(106, 32, 52, 0.7);
+  margin: 0;
+}
+
+.catalog__highlight h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #371320;
+}
+
+.catalog__highlight-author {
+  margin: 0;
+  font-weight: 600;
+  color: #6a2034;
+}
+
+.catalog__highlight-price {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6a2034;
+}
+
+.catalog__highlight button {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  background: #651f32;
+  color: #fef6f2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalog__highlight button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(99, 28, 48, 0.22);
+}
+
+@media (max-width: 600px) {
+  .catalog {
+    padding-bottom: 3rem;
+  }
 }
