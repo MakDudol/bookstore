@@ -1,0 +1,130 @@
+.checkout {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkout__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 6, 14, 0.45);
+}
+
+.checkout__content {
+  position: relative;
+  width: min(640px, 90%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fffaf6;
+  border-radius: 28px;
+  padding: 2.5rem 2.75rem;
+  box-shadow: 0 32px 64px rgba(45, 10, 24, 0.3);
+}
+
+.checkout__close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #8c2f45;
+}
+
+.checkout h2 {
+  margin-top: 0;
+  color: #361420;
+  font-size: 1.6rem;
+}
+
+.checkout__subtitle {
+  margin-bottom: 2rem;
+  color: rgba(54, 20, 32, 0.75);
+}
+
+.checkout__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.checkout__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: #5b1a2e;
+}
+
+.checkout__form input,
+.checkout__form textarea {
+  border-radius: 16px;
+  border: 1px solid rgba(91, 26, 46, 0.15);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  background: #f9f4f1;
+  color: #361420;
+}
+
+.checkout__form textarea {
+  resize: vertical;
+}
+
+.checkout__submit {
+  align-self: flex-start;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: #5b1a2e;
+  color: #f6ede6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkout__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(91, 26, 46, 0.25);
+}
+
+.checkout__summary p {
+  color: rgba(54, 20, 32, 0.75);
+}
+
+.checkout__summary ul {
+  padding-left: 1.2rem;
+  color: #361420;
+}
+
+.checkout__total {
+  font-weight: 700;
+  color: #5b1a2e;
+}
+
+.checkout__contact {
+  margin: 1.5rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkout__contact textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px dashed rgba(91, 26, 46, 0.3);
+  background: rgba(246, 237, 230, 0.5);
+  padding: 0.75rem;
+  color: #361420;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .checkout__content {
+    padding: 2rem 1.5rem;
+    width: 92%;
+  }
+}
