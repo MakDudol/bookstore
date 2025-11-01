@@ -108,3 +108,17 @@
   transform: translateY(-1px);
   box-shadow: 0 12px 24px rgba(99, 28, 48, 0.2);
 }
+
+.book-card__link {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  color: inherit;
+  text-decoration: none;
+}
+
+.book-card__link:focus-visible {
+  outline: 3px solid rgba(101, 31, 50, 0.6);
+  outline-offset: 4px;
+  border-radius: 22px;
+}

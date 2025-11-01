@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './CheckoutModal.css'
 
-function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice, contacts }) {
+function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice }) {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
@@ -27,11 +27,7 @@ function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice, contac
     return null
   }
 
-  const orderText = summary
-    ? `Привіт! Мене звати ${summary.name}. Хочу замовити: ${summary.items
-        .map((item) => `${item.quantity} × ${item.title}`)
-        .join(', ')}. Разом: ${formatPrice(summary.total)}.`
-    : ''
+  
 
   return (
     <div className="checkout" role="dialog" aria-modal="true">
@@ -64,7 +60,7 @@ function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice, contac
                   name="contact"
                   value={formData.contact}
                   onChange={handleChange}
-                  placeholder="example@email.com / +1 234 567 890"
+                  placeholder="solovyinaca@gmail.com"
                   required
                 />
               </label>
@@ -95,13 +91,7 @@ function CheckoutModal({ isOpen, onClose, onSubmit, summary, formatPrice, contac
               ))}
             </ul>
             <p className="checkout__total">Разом: {formatPrice(summary.total)}</p>
-            <div className="checkout__contact">
-              <p>
-                Скопіюй і надішли цей текст на <strong>{contacts.email}</strong> або в Instagram{' '}
-                <strong>{contacts.instagram}</strong>:
-              </p>
-              <textarea readOnly value={orderText} />
-            </div>
+           
             <button type="button" className="checkout__submit" onClick={handleClose}>
               Закрити
             </button>
