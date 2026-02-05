@@ -2,6 +2,14 @@
   width: 100%;
 }
 
+.search--icon {
+  display: none;
+}
+
+.search--sheet {
+  width: 100%;
+}
+
 .search input {
   width: 100%;
   padding: 0.85rem 1.25rem;
@@ -22,4 +30,20 @@
   border-color: #8f2d41;
   box-shadow: 0 0 0 3px rgba(143, 45, 65, 0.2);
   background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .search--full {
+    display: none;
+  }
+
+  .search--icon {
+    display: block;
+  }
+
+  .search--icon input {
+    border-radius: 16px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
 }

@@ -100,6 +100,46 @@
   color: #371320;
 }
 
+.checkout__summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkout__summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #371320;
+}
+
+.checkout__summary-title {
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.checkout__summary-line {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 700;
+  color: #6a2034;
+  font-variant-numeric: tabular-nums;
+  min-width: max-content;
+  gap: 0.15rem;
+}
+
+.checkout__summary-note {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: rgba(55, 19, 32, 0.65);
+}
+
 .checkout__total {
   font-weight: 700;
   color: #6a2034;

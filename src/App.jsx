@@ -1,18 +1,22 @@
-﻿import { useEffect, useMemo, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Cart from "./components/Cart";
-import CheckoutModal from "./components/CheckoutModal";
-import books from "./data/bookDetails";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import { loadCart, saveCart } from "./utils/storage";
 import { pickRandom, shuffle } from "./utils/recommendation";
 import { normalizeGenreList } from "./utils/books";
+import { effectivePriceCad } from "./utils/pricing";
+import { fetchBooks } from "./services/booksApi";
 import Home from "./pages/Home";
 import BookDetail from "./pages/BookDetail";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import "./App.css";
-
-const STORE_NAME = "D�D_D�D_D�'�-D�D�";
+import "./styles/global.css";
+const STORE_NAME = "Солов'їна";
+const FOOTER_NOTE = "Усі права захищено.";
 
 const CONTACTS = {
   email: "solovyinaca@gmail.com",
@@ -27,23 +31,60 @@ const formatter = new Intl.NumberFormat("uk-UA", {
 });
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [cartItems, setCartItems] = useState(() => loadCart());
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [checkoutSummary, setCheckoutSummary] = useState(null);
-
-  const allBooks = books;
+  const [catalogPage, setCatalogPage] = useState(1);
+  const [allBooks, setAllBooks] = useState([]);
+  const [booksLoading, setBooksLoading] = useState(true);
+  const [booksError, setBooksError] = useState("");
 
   useEffect(() => {
     saveCart(cartItems);
   }, [cartItems]);
 
+  useEffect(() => {
+    let isActive = true;
+    setBooksLoading(true);
+    setBooksError("");
+
+    fetchBooks()
+      .then((data) => {
+        if (!isActive) return;
+        setAllBooks(data);
+      })
+      .catch((err) => {
+        if (!isActive) return;
+        setBooksError(err?.message || "Не вдалося завантажити каталог.");
+      })
+      .finally(() => {
+        if (!isActive) return;
+        setBooksLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
   const formatPrice = (value) => formatter.format(value);
 
-  const [rec] = useState(() => pickRandom(allBooks));
+  const resetFiltersToDefault = useCallback(() => {
+    setSearchTerm("");
+    setSelectedCategory(null);
+    setSelectedGenre(null);
+    setCatalogPage(1);
+    navigate("/", { replace: false });
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }
+  }, [navigate]);
+
+  const rec = useMemo(() => pickRandom(allBooks), [allBooks]);
 
   const sourceBooks = useMemo(() => shuffle(allBooks), [allBooks]);
 
@@ -67,6 +108,11 @@ function App() {
     return rec;
   }, [searchTerm, selectedCategory, selectedGenre, rec]);
 
+  const hasSearch = searchTerm.trim().length > 0;
+  const hasFilters = Boolean(selectedCategory || selectedGenre || hasSearch);
+  const isHomeRoute = location.pathname === "/";
+  const shouldShowMasthead = isHomeRoute && !hasFilters && catalogPage === 1;
+
   const cartWithDetails = useMemo(
     () =>
       cartItems
@@ -76,19 +122,19 @@ function App() {
             return null;
           }
 
+          const unitPrice = effectivePriceCad(book);
           return {
             ...item,
             book,
+            unitPrice,
+            lineTotal: unitPrice * item.quantity,
           };
         })
         .filter(Boolean),
     [cartItems, allBooks],
   );
 
-  const cartTotal = cartWithDetails.reduce(
-    (total, item) => total + item.book.priceCad * item.quantity,
-    0,
-  );
+  const cartTotal = cartWithDetails.reduce((total, item) => total + item.lineTotal, 0);
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
@@ -111,8 +157,7 @@ function App() {
       prev
         .map((item) =>
           item.id === bookId
-            ? { ...item, quantity: Math.max(0, item.quantity + delta) }
-            : item,
+            ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item,
         )
         .filter((item) => item.quantity > 0),
     );
@@ -123,28 +168,12 @@ function App() {
   };
 
   const handleCheckout = () => {
-    setIsCheckoutOpen(true);
     setIsCartOpen(false);
+    navigate("/checkout");
   };
 
-  const handleCheckoutSubmit = (data) => {
-    const itemsForSummary = cartWithDetails.map((item) => ({
-      id: item.id,
-      title: item.book.title,
-      priceCad: item.book.priceCad,
-      quantity: item.quantity,
-    }));
-
-    setCheckoutSummary({
-      ...data,
-      items: itemsForSummary,
-      total: cartTotal,
-    });
-  };
-
-  const handleCloseCheckout = () => {
-    setIsCheckoutOpen(false);
-    setCheckoutSummary(null);
+  const handleClearCart = () => {
+    setCartItems([]);
   };
 
   return (
@@ -159,30 +188,52 @@ function App() {
         onCategorySelect={setSelectedCategory}
         selectedGenre={selectedGenre}
         onGenreSelect={setSelectedGenre}
+        onLogoClick={resetFiltersToDefault}
       />
 
       <main>
+        <ScrollToTop />
         <Routes>
           <Route
-            path="/"
-            element={
-              <Home
-                storeName={STORE_NAME}
-                contacts={CONTACTS}
-                highlightBook={highlightBook}
-                books={filteredBooks}
-                onAddToCart={handleAddToCart}
-                formatPrice={formatPrice}
-              />
-            }
+          path="/"
+          element={
+            <Home
+              contacts={CONTACTS}
+              highlightBook={highlightBook}
+              books={filteredBooks}
+              onAddToCart={handleAddToCart}
+              formatPrice={formatPrice}
+              onLogoClick={resetFiltersToDefault}
+              showMasthead={shouldShowMasthead}
+              catalogPage={catalogPage}
+              onCatalogPageChange={setCatalogPage}
+              isLoading={booksLoading}
+              error={booksError}
+            />
+          }
           />
           <Route
             path="/book/:bookId"
             element={
               <BookDetail
-                books={allBooks}
                 onAddToCart={handleAddToCart}
                 formatPrice={formatPrice}
+                onSearchChange={setSearchTerm}
+                onGenreSelect={setSelectedGenre}
+              />
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <Checkout
+                items={cartWithDetails}
+                total={cartTotal}
+                formatPrice={formatPrice}
+                onUpdateQuantity={handleUpdateQuantity}
+                onRemove={handleRemove}
+                onClearCart={handleClearCart}
+                contactEmail={CONTACTS.email}
               />
             }
           />
@@ -190,9 +241,7 @@ function App() {
         </Routes>
       </main>
 
-      <footer className="footer">
-        <p>Ac {new Date().getFullYear()} {STORE_NAME}. D��?�- D��?D�D�D� D�D��.D,�%D�D�D_.</p>
-      </footer>
+      <Footer storeName={STORE_NAME} note={FOOTER_NOTE} />
 
       <Cart
         isOpen={isCartOpen}
@@ -204,17 +253,12 @@ function App() {
         total={cartTotal}
         formatPrice={formatPrice}
       />
-
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={handleCloseCheckout}
-        onSubmit={handleCheckoutSubmit}
-        summary={checkoutSummary}
-        formatPrice={formatPrice}
-        contacts={CONTACTS}
-      />
     </div>
   );
 }
 
 export default App;
+
+
+
+

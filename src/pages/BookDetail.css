@@ -39,17 +39,21 @@
 
 .book-detail__cover {
   position: relative;
-  border-radius: 26px;
-  overflow: hidden;
-  box-shadow: 0 30px 50px rgba(60, 14, 26, 0.18);
-  background: #fff;
-  aspect-ratio: 3 / 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  padding: 0.25rem;
 }
 
 .book-detail__cover img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: clamp(260px, 34vw, 520px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08);
 }
 
 .book-detail__nav {
@@ -119,6 +123,8 @@
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  flex-wrap: wrap;
+  row-gap: 0.8rem;
 }
 
 .book-detail__price {
@@ -128,19 +134,7 @@
 }
 
 .book-detail__cta {
-  padding: 0.7rem 1.6rem;
-  border-radius: 999px;
-  background: #651f32;
-  color: #fff7f2;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.book-detail__cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 28px rgba(60, 14, 26, 0.18);
+  min-width: 230px;
 }
 
 .book-detail__meta {
@@ -163,6 +157,48 @@
 
 .book-detail__meta-row dd {
   margin: 0;
+}
+
+.book-detail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+  background-color: rgba(253, 247, 242, 0.92);
+  border: 1px solid rgba(101, 31, 50, 0.34);
+  color: #6a2034;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.meta-chip:hover {
+  background-color: rgba(253, 247, 242, 1);
+  box-shadow: 0 4px 10px rgba(60, 14, 26, 0.1);
+}
+
+.meta-chip:focus-visible {
+  outline: 2px solid rgba(101, 31, 50, 0.6);
+  outline-offset: 2px;
+}
+
+.meta-chip--author {
+  padding-inline: 0.7rem 1rem;
+}
+
+.meta-chip--genre {
+  background-color: rgba(253, 247, 242, 0.95);
 }
 
 .book-detail__tags {
@@ -240,7 +276,28 @@
     padding: 2rem 1rem 3rem;
   }
 
+  .book-detail__price-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .book-detail__cta {
+    width: 100%;
+  }
+
   .book-detail__description {
     padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .book-detail__cover img {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 767px) {
+  .book-detail__cover img {
+    max-width: 72vw;
   }
 }

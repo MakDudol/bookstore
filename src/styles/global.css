@@ -1,0 +1,139 @@
+:root {
+  --color-primary: #7a1a1a;
+  --color-accent: #b63a3a;
+  --color-bg: #f8f6f5;
+  --color-text: #1d1d1f;
+  --color-muted: rgba(29, 29, 31, 0.64);
+  --color-surface: #fffaf6;
+  --color-border: rgba(122, 26, 26, 0.16);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial,
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.cart-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 26px;
+  min-height: 2.65rem;
+  border-radius: 999px;
+  border: none;
+  background: #651f32;
+  color: #fdf7f2;
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cart-button:hover {
+  background: #4f1423;
+}
+
+.cart-button:active {
+  transform: translateY(1px);
+}
+
+.cart-button:focus-visible {
+  outline: 2px solid rgba(101, 31, 50, 0.8);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.header {
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: auto minmax(260px, 1fr) auto;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.5rem);
+  min-height: clamp(72px, 9vw, 140px);
+  height: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img {
+  height: clamp(44px, 8vw, 120px);
+  width: auto;
+  display: block;
+}
+
+.search-wrap {
+  display: flex;
+  flex: 1 1 520px;
+  min-width: 260px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+@media (max-width: 900px) {
+  .header-inner {
+    grid-template-columns: auto minmax(200px, 1fr) auto;
+    gap: clamp(0.8rem, 3vw, 1.6rem);
+  }
+
+  .header__right {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 720px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .header-inner {
+    gap: clamp(0.4rem, 4vw, 0.75rem);
+    height: auto;
+  }
+
+}
+
+@media (max-width: 430px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .header-inner {
+    gap: clamp(0.35rem, 5vw, 0.6rem);
+  }
+
+}

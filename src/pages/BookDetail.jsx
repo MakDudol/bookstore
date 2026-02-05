@@ -1,15 +1,54 @@
-﻿import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./BookDetail.css";
-import { formatGenres } from "../utils/books";
+import { normalizeGenreList } from "../utils/books";
+import { fetchBookById } from "../services/booksApi";
 
-function BookDetail({ books, onAddToCart, formatPrice }) {
+const NOT_FOUND_TEXT = "На жаль, ми не знайшли таку книжку.";
+const LOADING_TEXT = "Завантаження книжки…";
+const ERROR_TEXT = "Не вдалося завантажити книжку.";
+const BACK_TO_CATALOG = "← Повернутися до каталогу";
+const CTA_LABEL = "Додати до кошика";
+const DESCRIPTION_HEADING = "Про книжку";
+const PREV_IMAGE = "Попереднє зображення";
+const NEXT_IMAGE = "Наступне зображення";
+
+function BookDetail({ onAddToCart, formatPrice, onSearchChange, onGenreSelect }) {
   const { bookId } = useParams();
+  const navigate = useNavigate();
 
-  const book = useMemo(() => books.find((item) => item.id === bookId), [books, bookId]);
+  const [book, setBook] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isActive = true;
+    setIsLoading(true);
+    setError("");
+
+    fetchBookById(bookId)
+      .then((data) => {
+        if (!isActive) return;
+        setBook(data);
+      })
+      .catch((err) => {
+        if (!isActive) return;
+        setError(err?.message || ERROR_TEXT);
+      })
+      .finally(() => {
+        if (!isActive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [bookId]);
+
   const gallery = useMemo(() => {
     if (!book) return [];
-    return book.gallery && book.gallery.length > 0 ? book.gallery : [book.coverUrl];
+    if (book.gallery && book.gallery.length > 0) return book.gallery;
+    return book.coverUrl ? [book.coverUrl] : [];
   }, [book]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,13 +57,42 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
     setCurrentIndex(0);
   }, [bookId]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+  }, [bookId]);
+
+  if (isLoading) {
+    return (
+      <section className="book-detail book-detail--missing">
+        <div className="book-detail__container">
+          <p>{LOADING_TEXT}</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="book-detail book-detail--missing">
+        <div className="book-detail__container">
+          <p>{error || ERROR_TEXT}</p>
+          <Link to="/" className="book-detail__back">
+            {BACK_TO_CATALOG}
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   if (!book) {
     return (
       <section className="book-detail book-detail--missing">
         <div className="book-detail__container">
-          <p>На жаль, нам не вдалося знайти цю книжку.</p>
+          <p>{NOT_FOUND_TEXT}</p>
           <Link to="/" className="book-detail__back">
-            ← Повернутися до каталогу
+            {BACK_TO_CATALOG}
           </Link>
         </div>
       </section>
@@ -39,30 +107,52 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
     setCurrentIndex((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
   };
 
-  const genreText = formatGenres(book.genre);
+  const handleAuthorFilter = () => {
+    if (!book.author) {
+      return;
+    }
+
+    if (onSearchChange) {
+      onSearchChange(book.author);
+    }
+
+    navigate("/");
+  };
+
+  const handleGenreFilter = (genre) => {
+    if (!genre) {
+      return;
+    }
+
+    if (onGenreSelect) {
+      onGenreSelect(genre);
+    }
+
+    navigate("/");
+  };
+
+  const normalizedGenres = normalizeGenreList(book.genre);
 
   const detailRows = [
-    { label: "Автор", value: book.author },
-    { label: "Видавництво", value: book.publisher },
-    { label: "Жанр", value: genreText },
-    { label: "Мова", value: book.language },
-    { label: "Рік видання", value: book.publicationYear },
-    { label: "Сторінок", value: book.pages },
-    { label: "Обкладинка", value: book.coverType },
-  ].filter((item) => item.value);
+    { label: "Автор", value: book.author, type: "author" },
+    { label: "Жанри", value: normalizedGenres, type: "genres" },
+  ].filter((item) => {
+    if (item.type === "genres") {
+      return item.value.length > 0;
+    }
 
-  const extraFacts = [
-    { label: "Категорія", value: book.category },
-    { label: "Вага", value: book.weight },
-    { label: "Розміри", value: book.dimensions },
-    { label: "ISBN", value: book.isbn },
-  ].filter((item) => item.value && item.value !== "—" && item.value !== "-");
+    return item.value !== undefined && item.value !== null && item.value !== "";
+  });
+
+  const extraFacts = [{ label: "Категорія", value: book.category }].filter(
+    (item) => item.value && item.value !== "-",
+  );
 
   return (
     <section className="book-detail">
       <div className="book-detail__container">
         <Link to="/" className="book-detail__back">
-          ← Назад до каталогу
+          {BACK_TO_CATALOG}
         </Link>
 
         <div className="book-detail__grid">
@@ -75,17 +165,17 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
                     type="button"
                     className="book-detail__nav book-detail__nav--prev"
                     onClick={handlePrev}
-                    aria-label="Попереднє фото"
+                    aria-label={PREV_IMAGE}
                   >
-                    <span aria-hidden="true">‹</span>
+                    <span aria-hidden="true">&lt;</span>
                   </button>
                   <button
                     type="button"
                     className="book-detail__nav book-detail__nav--next"
                     onClick={handleNext}
-                    aria-label="Наступне фото"
+                    aria-label={NEXT_IMAGE}
                   >
-                    <span aria-hidden="true">›</span>
+                    <span aria-hidden="true">&gt;</span>
                   </button>
                 </>
               )}
@@ -99,7 +189,7 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
                     type="button"
                     className={`book-detail__thumb${index === currentIndex ? " is-active" : ""}`}
                     onClick={() => setCurrentIndex(index)}
-                    aria-label={`Переглянути фото ${index + 1}`}
+                    aria-label={`Переглянути зображення ${index + 1}`}
                   >
                     <img src={image} alt={`${book.title} — фото ${index + 1}`} />
                   </button>
@@ -115,10 +205,10 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
               <span className="book-detail__price">{formatPrice(book.priceCad)}</span>
               <button
                 type="button"
-                className="book-detail__cta"
+                className="book-detail__cta cart-button"
                 onClick={() => onAddToCart(book.id)}
               >
-                Додати до кошика
+                {CTA_LABEL}
               </button>
             </div>
 
@@ -126,7 +216,34 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
               {detailRows.map((row) => (
                 <div key={row.label} className="book-detail__meta-row">
                   <dt>{row.label}</dt>
-                  <dd>{row.value}</dd>
+                  <dd>
+                    {row.type === "author" ? (
+                      <div className="book-detail__chips">
+                        <button
+                          type="button"
+                          className="meta-chip meta-chip--author"
+                          onClick={handleAuthorFilter}
+                        >
+                          {row.value}
+                        </button>
+                      </div>
+                    ) : row.type === "genres" ? (
+                      <div className="book-detail__chips">
+                        {row.value.map((genre, index) => (
+                          <button
+                            key={`${genre}-${index}`}
+                            type="button"
+                            className="meta-chip meta-chip--genre"
+                            onClick={() => handleGenreFilter(genre)}
+                          >
+                            {genre}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      row.value
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -142,8 +259,8 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
         </div>
 
         <article className="book-detail__description">
-          <h2>Про книжку</h2>
-          <p>{book.longDescription}</p>
+          <h2>{DESCRIPTION_HEADING}</h2>
+          <p>{book.description || book.longDescription}</p>
 
           {extraFacts.length > 0 && (
             <ul className="book-detail__facts">
@@ -161,4 +278,3 @@ function BookDetail({ books, onAddToCart, formatPrice }) {
 }
 
 export default BookDetail;
-

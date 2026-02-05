@@ -6,7 +6,7 @@ function NotFound() {
     <section className="not-found">
       <div className="not-found__card">
         <h1>404</h1>
-        <p>Ми не змогли знайти цю сторінку.</p>
+        <p>Сторінку не знайдено або вона більше не доступна.</p>
         <Link to="/" className="not-found__link">
           Повернутися до каталогу
         </Link>

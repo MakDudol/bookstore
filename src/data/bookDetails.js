@@ -1,34 +1,32 @@
 ﻿import baseBooks from "./books";
 
 const BASE_DEFAULTS = {
-  publisher: "Невідоме видавництво",
+  publisher: "Незалежні видавці",
   language: "Українська",
   publicationYear: null,
   pages: null,
-  coverType: "Тверда",
-  category: "—",
+  coverType: "М'яка",
+  category: "-",
   longDescription: "",
   gallery: [],
 };
 
 const metadataById = {
-  "King-horror": {
-    publisher: "Видавництво Старого Лева",
-    genre: "Жахи, темне фентезі",
+  "King-horror-book": {
+    publisher: "Клуб Сімейного Дозвілля",
+    genre: "Горор, психологічний трилер",
     publicationYear: 2023,
-    pages: 496,
+    pages: 448,
     coverType: "Тверда",
-    weight: "0.55 кг",
-    dimensions: "15.5 × 23.2 см",
-    isbn: "978-966-448-344-2",
-    category: "Книжки для дорослих",
+    weight: "0.65 кг",
+    dimensions: "15.5 × 23.0 см",
+    isbn: "978-966-948-560-1",
+    category: "Світові бестселери",
     longDescription:
-      "Епічна історія протистояння зі стародавнім злом. Роман написаний у найкращих традиціях моторошних саг і подарує безліч мурах по шкірі на кожній сторінці.",
+      "Луїс Крід переїжджає до маленького містечка й дізнається про стародавнє кладовище. Коли трагедія торкається його родини, він робить вибір, який змінює все.",
     gallery: [
-      "https://bookchef.ua/upload/resize_cache/iblock/2ec/390_390_1/2ecf7a0e502b3076c52caa5539fcbb5f.jpg",
-      "https://i.imgur.com/0joQnQp.jpeg",
-      "https://i.imgur.com/ni5oDLf.jpeg",
-      "https://i.imgur.com/psX2vqw.jpeg",
+      'https://bookchef.ua/upload/resize_cache/iblock/2ec/390_390_1/2ecf7a0e502b3076c52caa5539fcbb5f.jpg',
+      'https://placehold.co/600x900?text=King+2',
     ],
   },
 };
@@ -46,7 +44,8 @@ export const booksWithDetails = baseBooks.map((book) => {
   return {
     ...merged,
     gallery: gallery.map((url) => url || book.coverUrl),
-    longDescription: meta.longDescription && meta.longDescription.length > 0 ? meta.longDescription : book.description,
+    longDescription:
+      meta.longDescription && meta.longDescription.length > 0 ? meta.longDescription : book.description,
   };
 });
 

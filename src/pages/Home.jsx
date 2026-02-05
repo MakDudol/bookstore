@@ -1,34 +1,39 @@
 ﻿import Catalog from "../components/Catalog";
+import Masthead from "../components/Masthead";
 
-function Home({ storeName, contacts, highlightBook, books, onAddToCart, formatPrice }) {
+const CONTACT_TITLE = "Зв'яжіться з нами";
+const NOTE_TEXT = "Обирайте книжки, а ми проконсультуємо вас і подбаємо про швидку доставку.";
+
+function Home({
+  contacts,
+  highlightBook,
+  books,
+  onAddToCart,
+  formatPrice,
+  onLogoClick,
+  showMasthead = true,
+  catalogPage,
+  onCatalogPageChange,
+  isLoading,
+  error,
+}) {
   return (
     <>
-      <section className="hero">
-        <div className="hero__inner">
-          <p className="hero__eyebrow">Українські книжки поруч із вами</p>
-          <h1>{storeName} — місце, де живуть історії</h1>
-          <p className="hero__text">
-            Добираємо натхненні українські видання, які хочеться подарувати друзям, читати в дорозі й зберігати на
-            полиці роками. Вибирайте, замовляйте, а ми подбаємо про решту.
-          </p>
-          <div className="hero__badges">
-            <span>Підтримка українських авторів</span>
-            <span>Кураторські добірки та рекомендації</span>
-            <span>Швидка доставка по Монреалю</span>
-          </div>
-        </div>
-      </section>
-
+      {showMasthead && <Masthead onLogoClick={onLogoClick} />}
       <Catalog
         books={books}
         onAddToCart={onAddToCart}
         highlightBook={highlightBook}
         formatPrice={formatPrice}
+        page={catalogPage}
+        onPageChange={onCatalogPageChange}
+        isLoading={isLoading}
+        error={error}
       />
 
       <section className="contact" id="contact">
         <div className="contact__card">
-          <h2>Зв’яжіться з нами</h2>
+          <h2>{CONTACT_TITLE}</h2>
           <ul>
             <li>
               <span>Email</span>
@@ -47,10 +52,7 @@ function Home({ storeName, contacts, highlightBook, books, onAddToCart, formatPr
           </ul>
         </div>
         <div className="contact__note">
-          <p>
-            Залюбки допоможемо підібрати книжку для подарунка, зібрати тематичну добірку або відповісти на будь-які
-            питання щодо доставки й наявності.
-          </p>
+          <p>{NOTE_TEXT}</p>
         </div>
       </section>
     </>

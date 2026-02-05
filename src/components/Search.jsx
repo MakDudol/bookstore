@@ -1,17 +1,36 @@
-import './Search.css'
+﻿import { forwardRef } from "react";
+import "./Search.css";
 
-function Search({ value, onChange }) {
+const DEFAULT_PLACEHOLDER = "Пошук за назвою чи автором";
+const DEFAULT_ARIA = "Пошук книжок";
+
+const Search = forwardRef(function Search(
+  {
+    value,
+    onChange,
+    placeholder = DEFAULT_PLACEHOLDER,
+    ariaLabel = DEFAULT_ARIA,
+    variant = "full",
+    className = "",
+    ...inputProps
+  },
+  inputRef,
+) {
+  const classes = ["search", variant ? `search--${variant}` : "", className].filter(Boolean).join(" ");
+
   return (
-    <div className="search">
+    <div className={classes}>
       <input
+        ref={inputRef}
         type="text"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Пошук за назвою чи автором"
-        aria-label="Пошук книжок"
+        placeholder={placeholder}
+        aria-label={ariaLabel}
+        {...inputProps}
       />
     </div>
-  )
-}
+  );
+});
 
-export default Search
+export default Search;
