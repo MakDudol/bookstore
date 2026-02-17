@@ -263,69 +263,71 @@ function Header({
               }}
             />
           </Link>
-          <div className="social social--sm" aria-label="Social links">
-            <a
-              className="social-link"
-              href="https://instagram.com/ukrbook_montreal"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >
-              <span className="social-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <rect
-                    x="3"
-                    y="3"
-                    width="18"
-                    height="18"
-                    rx="5"
-                    ry="5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  />
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="4.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  />
-                  <circle cx="17.35" cy="6.65" r="1.1" fill="currentColor" stroke="none" />
-                </svg>
-              </span>
-            </a>
-            <a
-              className="social-link"
-              href="https://www.facebook.com/share/1JH1fYgNFn/?mibextid=wwXIfr"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-            >
-              <span className="social-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M15.5 3h-3a4 4 0 0 0-4 4v3H6v3h2.5v8h3.4v-8h2.7l0.5-3H11.9V7.4c0-0.74 0.46-1.4 1.3-1.4h2.3V3Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-            </a>
-          </div>
-          <div className="header__contact">
-            <a href="#contact" className="header__contact-link">
-              {CONTACT_LINK_TEXT}
-            </a>
-            {contactPhone && (
-              <a href={`tel:${sanitizedPhone}`} className="header__contact-phone">
-                {contactPhone}
+          <div className="header__contacts">
+            <div className="social social--sm" aria-label="Social links">
+              <a
+                className="social-link"
+                href="https://instagram.com/ukrbook_montreal"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <span className="social-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="5"
+                      ry="5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <circle cx="17.35" cy="6.65" r="1.1" fill="currentColor" stroke="none" />
+                  </svg>
+                </span>
               </a>
-            )}
+              <a
+                className="social-link"
+                href="https://www.facebook.com/share/1JH1fYgNFn/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <span className="social-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                      d="M15.5 3h-3a4 4 0 0 0-4 4v3H6v3h2.5v8h3.4v-8h2.7l0.5-3H11.9V7.4c0-0.74 0.46-1.4 1.3-1.4h2.3V3Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <div className="header__contact">
+              <a href="#contact" className="header__contact-link">
+                {CONTACT_LINK_TEXT}
+              </a>
+              {contactPhone && (
+                <a href={`tel:${sanitizedPhone}`} className="header__contact-phone">
+                  {contactPhone}
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="header__center search-wrap">
+        <div className="header__center header__search search-wrap">
           <Search variant="full" value={searchTerm} onChange={onSearchChange} />
           <p className="header__search-note">
             <span>{SEARCH_NOTE_LINE_1}</span>
@@ -362,7 +364,7 @@ function Header({
             </svg>
           </button>
 
-          <nav className="header__menu" aria-label={NAV_ARIA_LABEL}>
+          <nav className="header__menu header__nav" aria-label={NAV_ARIA_LABEL}>
             <div className="menu-item">
               <button
                 type="button"
