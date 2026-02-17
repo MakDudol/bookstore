@@ -516,6 +516,141 @@
     display: none !important;
   }
 }
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .header {
+    padding-top: calc(env(safe-area-inset-top, 0) + 0.45rem);
+    padding-bottom: 0.55rem;
+    padding-inline: clamp(0.75rem, 4vw, 1.1rem);
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand nav cart"
+      "search search search"
+      "note note note"
+      "contacts contacts contacts";
+    gap: clamp(0.45rem, 3vw, 0.75rem);
+    align-items: center;
+  }
+
+  .header__left,
+  .header__right {
+    display: contents;
+  }
+
+  .header__brand {
+    grid-area: brand;
+  }
+
+  .header__brand img {
+    width: clamp(76px, 22vw, 96px);
+  }
+
+  .header__navRow {
+    grid-area: nav;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    justify-content: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .header__nav {
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .header__menu .menu-button,
+  .header__menu summary {
+    padding: 0.35rem 0.65rem;
+    min-height: 34px;
+    font-size: 0.82rem;
+  }
+
+  .header__cart {
+    grid-area: cart;
+    justify-self: end;
+    width: 40px;
+    height: 40px;
+  }
+
+  .header__cart svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .header__search {
+    display: contents;
+  }
+
+  .header__search .search {
+    grid-area: search;
+  }
+
+  .header__search .search input {
+    font-size: 1rem;
+    padding: 0.75rem 1.1rem;
+  }
+
+  .header__search-note {
+    grid-area: note;
+    margin: 0;
+    text-align: center;
+    font-size: 0.74rem;
+    color: rgba(93, 30, 50, 0.9);
+    justify-self: center;
+    max-width: 92%;
+  }
+
+  .header__contacts {
+    grid-area: contacts;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .social--sm {
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .social--sm a {
+    width: 26px;
+    height: 26px;
+  }
+
+  .social--sm svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .header__contact {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.74rem;
+  }
+
+  .header__contact-link {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .header__contact-phone {
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+}
 .masthead {
   display: flex;
   flex-direction: column;

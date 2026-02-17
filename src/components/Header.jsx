@@ -364,69 +364,71 @@ function Header({
             </svg>
           </button>
 
-          <nav className="header__menu header__nav" aria-label={NAV_ARIA_LABEL}>
-            <div className="menu-item">
-              <button
-                type="button"
-                className={`menu-button${selectedCategory ? " menu-button--active" : ""}`}
-                aria-haspopup="true"
-                aria-expanded={openMenu === "books"}
-                onClick={() => toggleMenu("books")}
-              >
-                {BOOKS_LABEL}
-              </button>
-              {openMenu === "books" && (
-                <div className="dropdown" role="menu">
-                  {BOOK_CATEGORIES.map((category) => {
-                    const isActive = selectedCategory === category.label;
-                    return (
-                      <button
-                        key={category.slug}
-                        type="button"
-                        role="menuitemradio"
-                        aria-checked={isActive}
-                        onClick={() => handleCategorySelect(category.label)}
-                        className={isActive ? "is-active" : ""}
-                      >
-                        {category.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-            <div className={`menu-item ${alignGenresEnd ? "menu-item--align-end" : ""}`}>
-              <button
-                type="button"
-                className={`menu-button${selectedGenre ? " menu-button--active" : ""}`}
-                aria-haspopup="true"
-                aria-expanded={openMenu === "genres"}
-                onClick={() => toggleMenu("genres")}
-                ref={genresBtnRef}
-              >
-                {GENRES_LABEL}
-              </button>
-              {openMenu === "genres" && (
-                <div className="dropdown" role="menu">
-                  {GENRE_LIST.map((genre) => {
-                    const isActive = selectedGenre === genre.label;
-                    return (
-                      <button
-                        key={genre.slug}
-                        type="button"
-                        role="menuitemradio"
-                        aria-checked={isActive}
-                        onClick={() => handleGenreSelect(genre.label)}
-                        className={isActive ? "is-active" : ""}
-                      >
-                        {genre.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </nav>
+          <div className="header__navRow">
+            <nav className="header__menu header__nav" aria-label={NAV_ARIA_LABEL}>
+              <div className="menu-item">
+                <button
+                  type="button"
+                  className={`menu-button${selectedCategory ? " menu-button--active" : ""}`}
+                  aria-haspopup="true"
+                  aria-expanded={openMenu === "books"}
+                  onClick={() => toggleMenu("books")}
+                >
+                  {BOOKS_LABEL}
+                </button>
+                {openMenu === "books" && (
+                  <div className="dropdown" role="menu">
+                    {BOOK_CATEGORIES.map((category) => {
+                      const isActive = selectedCategory === category.label;
+                      return (
+                        <button
+                          key={category.slug}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={isActive}
+                          onClick={() => handleCategorySelect(category.label)}
+                          className={isActive ? "is-active" : ""}
+                        >
+                          {category.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className={`menu-item ${alignGenresEnd ? "menu-item--align-end" : ""}`}>
+                <button
+                  type="button"
+                  className={`menu-button${selectedGenre ? " menu-button--active" : ""}`}
+                  aria-haspopup="true"
+                  aria-expanded={openMenu === "genres"}
+                  onClick={() => toggleMenu("genres")}
+                  ref={genresBtnRef}
+                >
+                  {GENRES_LABEL}
+                </button>
+                {openMenu === "genres" && (
+                  <div className="dropdown" role="menu">
+                    {GENRE_LIST.map((genre) => {
+                      const isActive = selectedGenre === genre.label;
+                      return (
+                        <button
+                          key={genre.slug}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={isActive}
+                          onClick={() => handleGenreSelect(genre.label)}
+                          className={isActive ? "is-active" : ""}
+                        >
+                          {genre.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </nav>
+          </div>
 
           <button
             className="header__cart"
