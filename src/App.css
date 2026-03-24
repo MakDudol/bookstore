@@ -2,6 +2,8 @@
   background: linear-gradient(180deg, #fdf7f2 0%, #f5ebe6 45%, #fdf7f2 100%);
   min-height: 100vh;
   color: #371320;
+  width: 100%;
+  min-width: 0;
 }
 
 main {
@@ -9,6 +11,7 @@ main {
   flex-direction: column;
   gap: 3.5rem;
   padding-bottom: 4rem;
+  min-width: 0;
 }
 
 .site-hero {
@@ -278,6 +281,8 @@ main {
   max-width: 1080px;
   padding: 0 1.5rem;
   margin: 0 auto;
+  width: 100%;
+  min-width: 0;
 }
 
 .contact__card {
@@ -288,6 +293,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 .contact__card h2 {
@@ -322,6 +328,8 @@ main {
   color: #6a2034;
   font-weight: 600;
   text-decoration: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contact__card a:hover {
@@ -340,6 +348,7 @@ main {
   overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
+  min-width: 0;
 }
 
 
@@ -454,5 +463,13 @@ main {
 
   .contact__note {
     padding: 1.4rem 1.6rem;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .contact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+    padding-inline: clamp(0.75rem, 4vw, 1rem);
   }
 }
