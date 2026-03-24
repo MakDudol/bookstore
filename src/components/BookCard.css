@@ -80,6 +80,16 @@
   line-height: 1.45;
 }
 
+@media (min-width: 769px) {
+  .book-card__description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .book-card__footer {
   margin-top: auto;
   padding: 1rem 1.3rem 1.3rem;

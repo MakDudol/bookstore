@@ -126,6 +126,7 @@
 
 .catalog__page-list {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
@@ -143,6 +144,17 @@
 .catalog__page-num.is-active {
   background: #651f32;
   color: #fef6f2;
+}
+
+.catalog__page-ellipsis {
+  min-width: 1.5rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(101, 31, 50, 0.72);
+  font-weight: 700;
+  user-select: none;
 }
 
 .catalog__highlight-link {

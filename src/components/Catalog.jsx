@@ -12,6 +12,45 @@ const PAGINATION_ARIA = "Навігація сторінками каталог�
 const PREV_LABEL = "Попередня";
 const NEXT_LABEL = "Наступна";
 const CTA_LABEL = "Додати до кошика";
+const MAX_FULL_PAGINATION = 8;
+const ELLIPSIS_START = "ellipsis-start";
+const ELLIPSIS_END = "ellipsis-end";
+
+function getVisiblePages(currentPage, totalPages) {
+  if (totalPages <= MAX_FULL_PAGINATION) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  let start = 2;
+  let end = totalPages - 1;
+
+  if (currentPage <= 4) {
+    end = Math.min(totalPages - 1, 6);
+  } else if (currentPage >= totalPages - 3) {
+    start = Math.max(2, totalPages - 5);
+  } else {
+    start = currentPage - 2;
+    end = currentPage + 2;
+  }
+
+  const pages = [1];
+
+  if (start > 2) {
+    pages.push(ELLIPSIS_START);
+  }
+
+  for (let pageNumber = start; pageNumber <= end; pageNumber += 1) {
+    pages.push(pageNumber);
+  }
+
+  if (end < totalPages - 1) {
+    pages.push(ELLIPSIS_END);
+  }
+
+  pages.push(totalPages);
+
+  return pages;
+}
 
 function Catalog({
   books,
@@ -110,6 +149,10 @@ function Catalog({
 
   const totalPages = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
+  const visiblePages = useMemo(
+    () => getVisiblePages(currentPage, totalPages),
+    [currentPage, totalPages],
+  );
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
   const end = start + ITEMS_PER_PAGE;
   const pageItems = items.slice(start, end);
@@ -184,16 +227,25 @@ function Catalog({
           </button>
 
           <div className="catalog__page-list">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                type="button"
-                className={p === currentPage ? "catalog__page-num is-active" : "catalog__page-num"}
-                onClick={() => goTo(p)}
-              >
-                {p}
-              </button>
-            ))}
+            {visiblePages.map((pageItem, index) =>
+              typeof pageItem === "number" ? (
+                <button
+                  key={pageItem}
+                  type="button"
+                  className={
+                    pageItem === currentPage ? "catalog__page-num is-active" : "catalog__page-num"
+                  }
+                  onClick={() => goTo(pageItem)}
+                  aria-current={pageItem === currentPage ? "page" : undefined}
+                >
+                  {pageItem}
+                </button>
+              ) : (
+                <span key={`${pageItem}-${index}`} className="catalog__page-ellipsis" aria-hidden="true">
+                  …
+                </span>
+              ),
+            )}
           </div>
 
           <button
