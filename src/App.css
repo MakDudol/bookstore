@@ -162,6 +162,19 @@ main {
   outline-offset: 2px;
 }
 
+.hero__badge--promotions {
+  background: #651f32;
+  color: #fdf7f2;
+}
+
+.hero__badge--promotions:hover {
+  background: #4f1423;
+}
+
+.hero__badge--promotions:focus-visible {
+  outline: 3px solid rgba(253, 247, 242, 0.5);
+}
+
 @media (max-width: 1023px) {
   .masthead-inner {
     grid-template-columns: minmax(0, 1fr);

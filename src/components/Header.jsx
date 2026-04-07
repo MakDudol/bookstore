@@ -46,6 +46,10 @@ const GENRE_LIST = [
   { label: "Пізнавальна література", slug: "piznavalna-literatura" },
   { label: "Мотиваційна література", slug: "motyvatsiina-literatura" },
   { label: "Психологія", slug: "psykholohiia" },
+  { label: "Коротка проза", slug: "korotka-proza" },
+  { label: "Поезія", slug: "poeziia" },
+  { label: "Комікси", slug: "komiksy" },
+  { label: "Драматичні твори", slug: "dramatychni-tvory" },
 ];
 
 function Header({

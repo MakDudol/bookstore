@@ -1,11 +1,13 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import heroLogo from "../assets/logo.png";
 import smallHeroFallback from "../assets/Solovyina_logo_icon_bird_white.png";
+import easterPromoImage from "../assets/velykden.jpg";
 import InfoModal from "./InfoModal";
 import "./Masthead.css";
 
 const HERO_ALT = "Солов'їна — логотип";
 const HERO_EYEBROW = "Українські книжки поруч із вами";
+const EASTER_PROMO_SESSION_KEY = "easter-promo-shown";
 const INFO_ITEMS = [
   {
     key: "custom-order",
@@ -23,34 +25,46 @@ const INFO_ITEMS = [
     key: "delivery-payment",
     label: "Доставка і оплата",
     title: "Доставка і оплата",
-    body: "Інформацію буде додано незабаром.",
+    body: `✓ По Канаді та США відправляємо замовлення через CanadaPost.
+✓ При замовленні від 200 доларів відправка по Канаді безкоштовна.
+✓ В Монреалі можливий самовивіз з нашого шоу-руму. Також безкоштовно доставляємо до станцій метро Berri-UQAM, Viau, BeauBien, Saint Michelle.
+✓ Оплата при отриманні готівкою або є-трансфером`,
   },
   {
     key: "promotions",
     label: "Акції",
     title: "Акції",
     body: `🟢 Постійно діючі
-🚚 Безкоштовна доставка по Канаді
-При замовленні на суму від 150$ доставка по Канаді — безкоштовна.
+🚚 При замовленні на суму від 150$ доставка по Канаді — безкоштовна.
 
-🚇 Безкоштовна доставка в Монреалі до метро
-Ми безкоштовно підвозимо ваше замовлення до однієї з станцій метро:
+🚇 Ми безкоштовно підвозимо ваше замовлення до однієї з станцій метро:
 Berry–UQAM, Viau, Saint-Michel, Beaubien.
 
 Також можемо домовитися про інше зручне місце в межах Монреаля.
 
 🔴 Спеціальні пропозиції
-💖 День святого Валентина в «Солов’їній»
-До 14 лютого включно — –10% на всі любовні романи.
-Чудова нагода зробити книжковий подарунок коханій людині.
-📦 Доставка по Канаді та США`,
+Великодня акція
+З 30 березня до 19 квітня при замовленні від трьох книг знижка 10%`,
   },
 ];
 
 function Masthead() {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [activeInfo, setActiveInfo] = useState(null);
+  const [isEasterPromoOpen, setIsEasterPromoOpen] = useState(false);
   const triggerRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      const hasSeenPromo = sessionStorage.getItem(EASTER_PROMO_SESSION_KEY);
+      if (!hasSeenPromo) {
+        setIsEasterPromoOpen(true);
+        sessionStorage.setItem(EASTER_PROMO_SESSION_KEY, "1");
+      }
+    } catch {
+      setIsEasterPromoOpen(true);
+    }
+  }, []);
 
   const handleOpen = (info, event) => {
     triggerRef.current = event.currentTarget;
@@ -65,6 +79,10 @@ function Masthead() {
       const target = triggerRef.current;
       requestAnimationFrame(() => target.focus());
     }
+  };
+
+  const handleEasterPromoClose = () => {
+    setIsEasterPromoOpen(false);
   };
 
   return (
@@ -88,7 +106,7 @@ function Masthead() {
               <button
                 key={item.key}
                 type="button"
-                className="hero__badge"
+                className={`hero__badge${item.key === "promotions" ? " hero__badge--promotions" : ""}`}
                 onClick={(event) => handleOpen(item, event)}
               >
                 {item.label}
@@ -99,6 +117,17 @@ function Masthead() {
       </div>
       {isInfoOpen && activeInfo && (
         <InfoModal title={activeInfo.title} body={activeInfo.body} onClose={handleClose} />
+      )}
+      {isEasterPromoOpen && (
+        <InfoModal
+          title=""
+          body={
+            <div className="easter-promo">
+              <img className="easter-promo__image" src={easterPromoImage} alt="Великодня акція" />
+            </div>
+          }
+          onClose={handleEasterPromoClose}
+        />
       )}
     </section>
   );
