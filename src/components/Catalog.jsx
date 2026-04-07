@@ -196,9 +196,20 @@ function Catalog({
               <article key={`${book.id}-highlight`} className="catalog__highlight">
                 <Link to={`/book/${book.id}`} className="catalog__highlight-link">
                   <p className="catalog__highlight-label">{HIGHLIGHT_LABEL}</p>
-                  <h3>{book.title}</h3>
-                  <p className="catalog__highlight-author">{book.author}</p>
-                  <p className="catalog__highlight-price">{formatPrice(book.priceCad)}</p>
+                  <div className="catalog__highlight-image">
+                    <img
+                      src={book.coverUrl}
+                      alt={book.title}
+                      loading="lazy"
+                      srcSet={`${book.coverUrl} 1x`}
+                      sizes="(max-width: 540px) 45vw, (max-width: 1024px) 220px, 260px"
+                    />
+                  </div>
+                  <div className="catalog__highlight-body">
+                    <h3>{book.title}</h3>
+                    <p className="catalog__highlight-author">{book.author}</p>
+                    <p className="catalog__highlight-price">{formatPrice(book.priceCad)}</p>
+                  </div>
                 </Link>
                 <button
                   type="button"
