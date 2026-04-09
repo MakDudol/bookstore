@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { submitOrder } from "../services/ordersApi";
 import "./Checkout.css";
 
 const PAGE_TITLE = "Оформлення замовлення";
@@ -60,11 +61,12 @@ function Checkout({
   onUpdateQuantity = () => {},
   onRemove = () => {},
   onClearCart = () => {},
-  contactEmail = "",
 }) {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const subtotal = useMemo(
     () =>
@@ -86,6 +88,9 @@ function Checkout({
         delete next[name];
         return next;
       });
+    }
+    if (submitError) {
+      setSubmitError("");
     }
   };
 
@@ -131,58 +136,71 @@ function Checkout({
     }
   };
 
-  const buildMailto = () => {
-    const lines = [
-      "Нове замовлення",
-      "",
-      "Ваші дані:",
-      `Ім’я: ${formData.name}`,
-      `Імейл: ${formData.email}`,
-      `Телефон: ${formData.phone}`,
-      "",
-      "Деталі доставки:",
-      `Адреса: ${formData.address}`,
-      `Квартира: ${formData.apartment || "-"}`,
-      `Місто: ${formData.city}`,
-      `Штат/Провінція: ${formData.region}`,
-      `Zip/Postal Code: ${formData.postal}`,
-      `Країна: ${formData.country}`,
-      "",
-      "Спосіб оплати:",
-      PAYMENT_CONFIRM,
-      "",
-      "Замовлення:",
-      ...items.map((item) => {
-        const unit = item.unitPrice ?? item.book?.priceCad ?? 0;
-        const line = item.lineTotal ?? unit * item.quantity;
-        return `- ${item.book?.title} — ${item.quantity} x ${formatPrice(unit)} = ${formatPrice(line)}`;
-      }),
-      "",
-      `${TOTAL_SUBTOTAL}: ${formatPrice(subtotal)}`,
-      `${TOTAL_DISCOUNT}: ${formatPrice(discount)}`,
-      `${TOTAL_SUM}: ${formatPrice(total)}`,
-    ];
+  const buildOrderItems = () =>
+    items
+      .map((item) => {
+        const title = String(item.book?.title ?? "").trim();
+        const quantity = Number(item.quantity) || 0;
+        const unitPrice = Number(item.unitPrice ?? item.book?.priceCad ?? 0);
+        const lineTotal = Number(item.lineTotal ?? unitPrice * quantity);
 
-    const subject = "Нове замовлення — Солов'їна";
-    const body = lines.join("\n");
-    return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
+        return {
+          title,
+          quantity,
+          unitPrice: Number.isFinite(unitPrice) ? unitPrice : 0,
+          lineTotal: Number.isFinite(lineTotal) ? lineTotal : 0,
+        };
+      })
+      .filter((item) => item.title && item.quantity > 0);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    if (!items.length) {
+      setSubmitError(EMPTY_HELPER);
+      return;
+    }
+
     const nextErrors = validate();
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
+      setSubmitError("");
       focusFirstError(nextErrors);
       return;
     }
 
-    if (typeof window !== "undefined") {
-      window.location.href = buildMailto();
-    }
+    const payload = {
+      customer: {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        apartment: formData.apartment.trim(),
+        city: formData.city.trim(),
+        region: formData.region.trim(),
+        postal: formData.postal.trim(),
+        country: formData.country.trim(),
+      },
+      items: buildOrderItems(),
+      total,
+    };
 
-    setIsSubmitted(true);
-    onClearCart();
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await submitOrder(payload);
+      setIsSubmitted(true);
+      onClearCart();
+    } catch (error) {
+      setSubmitError(error?.message || "Не вдалося відправити замовлення.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderPrice = (item) => {
@@ -429,9 +447,20 @@ function Checkout({
                   <strong>{formatPrice(total)}</strong>
                 </div>
               </div>
-              <button type="submit" form="checkout-form" className="cart-button checkout__submit">
+              <button
+                type="submit"
+                form="checkout-form"
+                className="cart-button checkout__submit"
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
                 {SUBMIT_LABEL}
               </button>
+              {submitError && (
+                <em className="checkout__error checkout__submit-error" role="alert">
+                  {submitError}
+                </em>
+              )}
             </div>
           </aside>
         </div>
