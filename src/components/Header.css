@@ -136,6 +136,10 @@
   display: block;
 }
 
+.header__search-note span:last-child {
+  font-weight: 600;
+}
+
 .header__right {
   justify-self: end;
   display: inline-flex;

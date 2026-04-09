@@ -18,7 +18,7 @@ const MOBILE_SEARCH_CLOSE_LABEL = "Закрити пошук";
 const MOBILE_SEARCH_ID = "mobile-search";
 const MOBILE_SEARCH_TITLE_ID = "mobile-search-label";
 const SEARCH_NOTE_LINE_1 = "Доставка по Канаді та США";
-const SEARCH_NOTE_LINE_2 = "При замовленні від 150$ безкоштовна відправка по Канаді";
+const SEARCH_NOTE_LINE_2 = "При замовленні від 200$ безкоштовна відправка по Канаді";
 
 const BOOK_CATEGORIES = [
   { label: "Новинки", slug: "novynky" },
