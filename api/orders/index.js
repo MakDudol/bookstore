@@ -150,7 +150,6 @@ export default async function handler(req, res) {
     "ZIP/Postal": toText(customer.postal),
     "Order Details": orderDetails,
     "Order Status": "New",
-    "Order Date": new Date().toISOString(),
     Total: total,
   };
 
@@ -175,23 +174,21 @@ export default async function handler(req, res) {
     return;
   }
 
-  const raw = await response.text();
-  let data = null;
+  let airtableData = null;
   try {
-    data = raw ? JSON.parse(raw) : null;
+    airtableData = await response.json();
   } catch (error) {
-    data = null;
+    airtableData = null;
   }
 
   if (!response.ok) {
-    const details = data?.error?.message || raw || "Unknown Airtable error.";
     res.status(response.status || 502).json({
-      error: "Airtable request failed.",
-      details,
+      error: airtableData?.error?.message || airtableData?.error || "Airtable request failed.",
+      details: airtableData,
     });
     return;
   }
 
-  const orderId = data?.records?.[0]?.id || null;
+  const orderId = airtableData?.records?.[0]?.id || null;
   res.status(201).json({ success: true, orderId });
 }
