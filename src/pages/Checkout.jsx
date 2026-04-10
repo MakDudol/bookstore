@@ -71,8 +71,10 @@ function Checkout({
   const subtotal = useMemo(
     () =>
       items.reduce((sum, item) => {
-        const basePrice = Number(item.book?.priceCad) || 0;
-        return sum + basePrice * item.quantity;
+        const lineTotal = Number(
+          item.lineTotal ?? (item.unitPrice ?? item.book?.priceCad ?? 0) * item.quantity,
+        );
+        return sum + (Number.isFinite(lineTotal) ? lineTotal : 0);
       }, 0),
     [items],
   );
