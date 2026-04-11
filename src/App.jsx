@@ -1,5 +1,6 @@
-﻿import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
@@ -266,6 +267,7 @@ function App() {
         total={cartTotal}
         formatPrice={formatPrice}
       />
+      <Analytics />
     </div>
   );
 }
