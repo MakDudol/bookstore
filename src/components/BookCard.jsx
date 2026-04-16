@@ -8,9 +8,11 @@ const priceFormatter = new Intl.NumberFormat("uk-UA", {
   minimumFractionDigits: 2,
 });
 const CTA_SHORT_LABEL = "Додати";
+const OUT_OF_STOCK_LABEL = "Немає в наявності";
 
 function BookCard({ book, onAddToCart }) {
   const genresText = formatGenres(book.genre);
+  const isOutOfStock = book.stock === 0;
   const hasDiscount =
     typeof book.discountPriceCad === "number" && book.discountPriceCad < book.priceCad;
   const formattedPrice = priceFormatter.format(book.priceCad);
@@ -35,6 +37,12 @@ function BookCard({ book, onAddToCart }) {
             srcSet={`${book.coverUrl} 1x`}
             sizes="(max-width: 540px) 45vw, (max-width: 1024px) 220px, 260px"
           />
+          {isOutOfStock && (
+            <>
+              <div className="book-card__stock-overlay" aria-hidden="true" />
+              <span className="book-card__stock-badge">{OUT_OF_STOCK_LABEL}</span>
+            </>
+          )}
         </div>
         <div className="book-card__body">
           <div className="book-card__tags">
@@ -48,7 +56,7 @@ function BookCard({ book, onAddToCart }) {
           <p className="book-card__description">{book.description}</p>
         </div>
       </Link>
-        <div className="book-card__footer">
+      <div className="book-card__footer">
         <div className="book-card__price">
           {hasDiscount ? (
             <>
@@ -60,9 +68,18 @@ function BookCard({ book, onAddToCart }) {
             <span className="price price--new">{formattedPrice}</span>
           )}
         </div>
-        <button type="button" className="book-card__cta cart-button" onClick={handleAddClick}>
-          <span className="book-card__cta-full">Додати до кошика</span>
-          <span className="book-card__cta-short">{CTA_SHORT_LABEL}</span>
+        <button
+          type="button"
+          className="book-card__cta cart-button"
+          onClick={handleAddClick}
+          disabled={isOutOfStock}
+        >
+          <span className="book-card__cta-full">
+            {isOutOfStock ? OUT_OF_STOCK_LABEL : "Додати до кошика"}
+          </span>
+          <span className="book-card__cta-short">
+            {isOutOfStock ? OUT_OF_STOCK_LABEL : CTA_SHORT_LABEL}
+          </span>
         </button>
       </div>
     </article>

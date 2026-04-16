@@ -33,6 +33,30 @@
   display: block;
 }
 
+.book-card__stock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.book-card__stock-badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(55, 19, 32, 0.8);
+  color: #fffaf6;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
 .book-card__body {
   padding: 1.1rem 1.3rem 0.8rem;
   display: flex;
@@ -148,6 +172,14 @@
   flex-shrink: 0;
 }
 
+.book-card__cta:disabled {
+  background: rgba(101, 31, 50, 0.38);
+  color: #fdf7f2;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 .book-card__link {
   display: flex;
   flex-direction: column;
@@ -180,6 +212,13 @@
   .book-card__image img {
     border-radius: 12px;
     object-fit: cover;
+  }
+
+  .book-card__stock-badge {
+    top: 0.45rem;
+    left: 0.45rem;
+    font-size: 0.62rem;
+    padding: 0.16rem 0.45rem;
   }
 
   .book-card__body {
