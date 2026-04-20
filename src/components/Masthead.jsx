@@ -1,66 +1,51 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useRef, useState } from "react";
 import heroLogo from "../assets/logo.png";
 import smallHeroFallback from "../assets/Solovyina_logo_icon_bird_white.png";
-import easterPromoImage from "../assets/velykden.jpg";
 import InfoModal from "./InfoModal";
 import "./Masthead.css";
 
-const HERO_ALT = "Солов'їна — логотип";
-const HERO_EYEBROW = "Українські книжки поруч із вами";
-const EASTER_PROMO_SESSION_KEY = "easter-promo-shown";
+const HERO_ALT = "Ð¡Ð¾Ð»Ð¾Ð²'Ñ—Ð½Ð° â€” Ð»Ð¾Ð³Ð¾Ñ‚Ð¸Ð¿";
+const HERO_EYEBROW = "Ð£ÐºÑ€Ð°Ñ—Ð½ÑÑŒÐºÑ– ÐºÐ½Ð¸Ð¶ÐºÐ¸ Ð¿Ð¾Ñ€ÑƒÑ‡ Ñ–Ð· Ð²Ð°Ð¼Ð¸";
 const INFO_ITEMS = [
   {
     key: "custom-order",
-    label: "Книги під замовлення",
-    title: "Книги під замовлення",
-    body: `Якщо потрібної книги немає в нашому асортименті, ви можете замовити її індивідуально.
-Зв’яжіться з нами через Instagram або Facebook, і ми повідомимо про можливість замовлення та терміни доставки.
-Для книг, що замовляються з України, передбачена передоплата 50%.`,
+    label: "ÐšÐ½Ð¸Ð³Ð¸ Ð¿Ñ–Ð´ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ",
+    title: "ÐšÐ½Ð¸Ð³Ð¸ Ð¿Ñ–Ð´ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ",
+    body: `Ð¯ÐºÑ‰Ð¾ Ð¿Ð¾Ñ‚Ñ€Ñ–Ð±Ð½Ð¾Ñ— ÐºÐ½Ð¸Ð³Ð¸ Ð½ÐµÐ¼Ð°Ñ” Ð² Ð½Ð°ÑˆÐ¾Ð¼Ñƒ Ð°ÑÐ¾Ñ€Ñ‚Ð¸Ð¼ÐµÐ½Ñ‚Ñ–, Ð²Ð¸ Ð¼Ð¾Ð¶ÐµÑ‚Ðµ Ð·Ð°Ð¼Ð¾Ð²Ð¸Ñ‚Ð¸ Ñ—Ñ— Ñ–Ð½Ð´Ð¸Ð²Ñ–Ð´ÑƒÐ°Ð»ÑŒÐ½Ð¾.
+Ð—Ð²â€™ÑÐ¶Ñ–Ñ‚ÑŒÑÑ Ð· Ð½Ð°Ð¼Ð¸ Ñ‡ÐµÑ€ÐµÐ· Instagram Ð°Ð±Ð¾ Facebook, Ñ– Ð¼Ð¸ Ð¿Ð¾Ð²Ñ–Ð´Ð¾Ð¼Ð¸Ð¼Ð¾ Ð¿Ñ€Ð¾ Ð¼Ð¾Ð¶Ð»Ð¸Ð²Ñ–ÑÑ‚ÑŒ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ Ñ‚Ð° Ñ‚ÐµÑ€Ð¼Ñ–Ð½Ð¸ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸.
+Ð”Ð»Ñ ÐºÐ½Ð¸Ð³, Ñ‰Ð¾ Ð·Ð°Ð¼Ð¾Ð²Ð»ÑÑŽÑ‚ÑŒÑÑ Ð· Ð£ÐºÑ€Ð°Ñ—Ð½Ð¸, Ð¿ÐµÑ€ÐµÐ´Ð±Ð°Ñ‡ÐµÐ½Ð° Ð¿ÐµÑ€ÐµÐ´Ð¾Ð¿Ð»Ð°Ñ‚Ð° 50%.`,
   },
   {
     key: "delivery-payment",
-    label: "Доставка і оплата",
-    title: "Доставка і оплата",
-    body: `✓ По Канаді та США відправляємо замовлення через CanadaPost.
-✓ При замовленні від 200 доларів відправка по Канаді безкоштовна.
-✓ В Монреалі можливий самовивіз з нашого шоу-руму. Також безкоштовно доставляємо до станцій метро Berri-UQAM, Viau, BeauBien, Saint Michelle.
-✓ Оплата при отриманні готівкою або є-трансфером`,
+    label: "Ð”Ð¾ÑÑ‚Ð°Ð²ÐºÐ° Ñ– Ð¾Ð¿Ð»Ð°Ñ‚Ð°",
+    title: "Ð”Ð¾ÑÑ‚Ð°Ð²ÐºÐ° Ñ– Ð¾Ð¿Ð»Ð°Ñ‚Ð°",
+    body: `âœ“ ÐŸÐ¾ ÐšÐ°Ð½Ð°Ð´Ñ– Ñ‚Ð° Ð¡Ð¨Ð Ð²Ñ–Ð´Ð¿Ñ€Ð°Ð²Ð»ÑÑ”Ð¼Ð¾ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ Ñ‡ÐµÑ€ÐµÐ· CanadaPost.
+âœ“ ÐŸÑ€Ð¸ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ– Ð²Ñ–Ð´ 200 Ð´Ð¾Ð»Ð°Ñ€Ñ–Ð² Ð²Ñ–Ð´Ð¿Ñ€Ð°Ð²ÐºÐ° Ð¿Ð¾ ÐšÐ°Ð½Ð°Ð´Ñ– Ð±ÐµÐ·ÐºÐ¾ÑˆÑ‚Ð¾Ð²Ð½Ð°.
+âœ“ Ð’ ÐœÐ¾Ð½Ñ€ÐµÐ°Ð»Ñ– Ð¼Ð¾Ð¶Ð»Ð¸Ð²Ð¸Ð¹ ÑÐ°Ð¼Ð¾Ð²Ð¸Ð²Ñ–Ð· Ð· Ð½Ð°ÑˆÐ¾Ð³Ð¾ ÑˆÐ¾Ñƒ-Ñ€ÑƒÐ¼Ñƒ. Ð¢Ð°ÐºÐ¾Ð¶ Ð±ÐµÐ·ÐºÐ¾ÑˆÑ‚Ð¾Ð²Ð½Ð¾ Ð´Ð¾ÑÑ‚Ð°Ð²Ð»ÑÑ”Ð¼Ð¾ Ð´Ð¾ ÑÑ‚Ð°Ð½Ñ†Ñ–Ð¹ Ð¼ÐµÑ‚Ñ€Ð¾ Berri-UQAM, Viau, BeauBien, Saint Michelle.
+âœ“ ÐžÐ¿Ð»Ð°Ñ‚Ð° Ð¿Ñ€Ð¸ Ð¾Ñ‚Ñ€Ð¸Ð¼Ð°Ð½Ð½Ñ– Ð³Ð¾Ñ‚Ñ–Ð²ÐºÐ¾ÑŽ Ð°Ð±Ð¾ Ñ”-Ñ‚Ñ€Ð°Ð½ÑÑ„ÐµÑ€Ð¾Ð¼`,
   },
   {
     key: "promotions",
-    label: "Акції",
-    title: "Акції",
-    body: `🟢 Постійно діючі
-🚚 При замовленні на суму від 200$ доставка по Канаді — безкоштовна.
+    label: "ÐÐºÑ†Ñ–Ñ—",
+    title: "ÐÐºÑ†Ñ–Ñ—",
+    body: `ðŸŸ¢ ÐŸÐ¾ÑÑ‚Ñ–Ð¹Ð½Ð¾ Ð´Ñ–ÑŽÑ‡Ñ–
+ðŸšš ÐŸÑ€Ð¸ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ– Ð½Ð° ÑÑƒÐ¼Ñƒ Ð²Ñ–Ð´ 200$ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ° Ð¿Ð¾ ÐšÐ°Ð½Ð°Ð´Ñ– â€” Ð±ÐµÐ·ÐºÐ¾ÑˆÑ‚Ð¾Ð²Ð½Ð°.
 
-🚇 Ми безкоштовно підвозимо ваше замовлення до однієї з станцій метро:
-Berry–UQAM, Viau, Saint-Michel, Beaubien.
+ðŸš‡ ÐœÐ¸ Ð±ÐµÐ·ÐºÐ¾ÑˆÑ‚Ð¾Ð²Ð½Ð¾ Ð¿Ñ–Ð´Ð²Ð¾Ð·Ð¸Ð¼Ð¾ Ð²Ð°ÑˆÐµ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ Ð´Ð¾ Ð¾Ð´Ð½Ñ–Ñ”Ñ— Ð· ÑÑ‚Ð°Ð½Ñ†Ñ–Ð¹ Ð¼ÐµÑ‚Ñ€Ð¾:
+Berryâ€“UQAM, Viau, Saint-Michel, Beaubien.
 
-Також можемо домовитися про інше зручне місце в межах Монреаля.
+Ð¢Ð°ÐºÐ¾Ð¶ Ð¼Ð¾Ð¶ÐµÐ¼Ð¾ Ð´Ð¾Ð¼Ð¾Ð²Ð¸Ñ‚Ð¸ÑÑ Ð¿Ñ€Ð¾ Ñ–Ð½ÑˆÐµ Ð·Ñ€ÑƒÑ‡Ð½Ðµ Ð¼Ñ–ÑÑ†Ðµ Ð² Ð¼ÐµÐ¶Ð°Ñ… ÐœÐ¾Ð½Ñ€ÐµÐ°Ð»Ñ.
 
-🔴 Спеціальні пропозиції
-Великодня акція
-До 19 квітня при замовленні від трьох книг знижка 10%`,
+ðŸ”´ Ð¡Ð¿ÐµÑ†Ñ–Ð°Ð»ÑŒÐ½Ñ– Ð¿Ñ€Ð¾Ð¿Ð¾Ð·Ð¸Ñ†Ñ–Ñ—
+Ð’ÐµÐ»Ð¸ÐºÐ¾Ð´Ð½Ñ Ð°ÐºÑ†Ñ–Ñ
+Ð”Ð¾ 19 ÐºÐ²Ñ–Ñ‚Ð½Ñ Ð¿Ñ€Ð¸ Ð·Ð°Ð¼Ð¾Ð²Ð»ÐµÐ½Ð½Ñ– Ð²Ñ–Ð´ Ñ‚Ñ€ÑŒÐ¾Ñ… ÐºÐ½Ð¸Ð³ Ð·Ð½Ð¸Ð¶ÐºÐ° 10%`,
   },
 ];
 
 function Masthead() {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [activeInfo, setActiveInfo] = useState(null);
-  const [isEasterPromoOpen, setIsEasterPromoOpen] = useState(false);
   const triggerRef = useRef(null);
-
-  useEffect(() => {
-    try {
-      const hasSeenPromo = sessionStorage.getItem(EASTER_PROMO_SESSION_KEY);
-      if (!hasSeenPromo) {
-        setIsEasterPromoOpen(true);
-        sessionStorage.setItem(EASTER_PROMO_SESSION_KEY, "1");
-      }
-    } catch {
-      setIsEasterPromoOpen(true);
-    }
-  }, []);
 
   const handleOpen = (info, event) => {
     triggerRef.current = event.currentTarget;
@@ -75,10 +60,6 @@ function Masthead() {
       const target = triggerRef.current;
       requestAnimationFrame(() => target.focus());
     }
-  };
-
-  const handleEasterPromoClose = () => {
-    setIsEasterPromoOpen(false);
   };
 
   return (
@@ -114,19 +95,10 @@ function Masthead() {
       {isInfoOpen && activeInfo && (
         <InfoModal title={activeInfo.title} body={activeInfo.body} onClose={handleClose} />
       )}
-      {isEasterPromoOpen && (
-        <InfoModal
-          title=""
-          body={
-            <div className="easter-promo">
-              <img className="easter-promo__image" src={easterPromoImage} alt="Великодня акція" />
-            </div>
-          }
-          onClose={handleEasterPromoClose}
-        />
-      )}
     </section>
   );
 }
 
 export default Masthead;
+
+

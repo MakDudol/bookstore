@@ -13,17 +13,3 @@
     padding-inline: clamp(0.5rem, 3vw, 1.25rem);
   }
 }
-
-.easter-promo {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.easter-promo__image {
-  display: block;
-  width: min(560px, 100%);
-  max-width: 100%;
-  height: auto;
-  border-radius: 18px;
-}
