@@ -137,19 +137,7 @@ function App() {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const cartSubtotal = cartWithDetails.reduce((sum, item) => sum + item.lineTotal, 0);
-
-  // TEMP EASTER PROMO START
-  const PROMO_ACTIVE = true;
-  const PROMO_MIN_BOOKS = 3;
-  const PROMO_DISCOUNT_PERCENT = 10;
-  const roundCurrency = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
-
-  const promoIsEligible = PROMO_ACTIVE && cartCount >= PROMO_MIN_BOOKS;
-  const promoDiscount = promoIsEligible
-    ? roundCurrency((cartSubtotal * PROMO_DISCOUNT_PERCENT) / 100)
-    : 0;
-  const cartTotal = roundCurrency(cartSubtotal - promoDiscount);
-  // TEMP EASTER PROMO END
+  const cartTotal = cartSubtotal;
 
   const handleAddToCart = (bookId) => {
     setCartItems((prev) => {
