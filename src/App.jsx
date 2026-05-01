@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
+import InfoModal from "./components/InfoModal";
 import ScrollToTop from "./components/ScrollToTop";
 import { loadCart, saveCart } from "./utils/storage";
 import { pickRandom, shuffle } from "./utils/recommendation";
@@ -17,6 +18,10 @@ import "./App.css";
 import "./styles/global.css";
 const STORE_NAME = "Солов'їна";
 const FOOTER_NOTE = "Усі права захищено.";
+const PROMOTION_MODAL_TITLE = "Акції";
+const PROMOTION_MODAL_BODY = `🎁 АКЦІЯ: БЕЗКОШТОВНА ДОСТАВКА!
+Лише до 8 травня при замовленні книг на суму від $150 доставка у будь-який куточок Канади — безкоштовна!`;
+const PROMOTION_MODAL_STORAGE_KEY = "promotion-modal-shown-2026-05-08";
 
 const CONTACTS = {
   email: "solovyinaca@gmail.com",
@@ -42,10 +47,19 @@ function App() {
   const [allBooks, setAllBooks] = useState([]);
   const [booksLoading, setBooksLoading] = useState(true);
   const [booksError, setBooksError] = useState("");
+  const [isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
 
   useEffect(() => {
     saveCart(cartItems);
   }, [cartItems]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hasSeenPromotionModal = window.sessionStorage.getItem(PROMOTION_MODAL_STORAGE_KEY);
+    if (hasSeenPromotionModal) return;
+    setIsPromotionModalOpen(true);
+    window.sessionStorage.setItem(PROMOTION_MODAL_STORAGE_KEY, "1");
+  }, []);
 
   useEffect(() => {
     let isActive = true;
@@ -243,6 +257,14 @@ function App() {
       </main>
 
       <Footer storeName={STORE_NAME} note={FOOTER_NOTE} />
+
+      {isPromotionModalOpen && (
+        <InfoModal
+          title={PROMOTION_MODAL_TITLE}
+          body={PROMOTION_MODAL_BODY}
+          onClose={() => setIsPromotionModalOpen(false)}
+        />
+      )}
 
       <Cart
         isOpen={isCartOpen}
